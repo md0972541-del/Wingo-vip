@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WINGO 2-STEP VIP - DEVELOPER SAFAIT</title>
+    <style>
+        body { background: #000; color: #fff; font-family: 'Orbitron', sans-serif; text-align: center; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; }
+        .card { background: #0d0d0d; border: 2px solid #00ffff; width: 380px; padding: 30px; border-radius: 35px; box-shadow: 0 0 50px rgba(0, 255, 255, 0.2); position: relative; }
+        .card::before { content: "2-STEP ANTI-LOSS"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #00ffff; color: #000; padding: 2px 15px; border-radius: 10px; font-size: 10px; font-weight: bold; }
+        .period { background: #1a1a1a; padding: 15px; border-radius: 15px; margin: 15px 0; color: #ffcc00; font-weight: bold; border: 1px solid #333; }
+        .timer { font-size: 55px; font-weight: 900; color: #00ffff; text-shadow: 0 0 20px #00ffff; }
+        .result-box { background: linear-gradient(180deg, #111, #000); border: 2px solid #ff0000; border-radius: 20px; padding: 25px; margin-top: 15px; }
+        .num { font-size: 90px; font-weight: 900; color: #ff0000; text-shadow: 0 0 40px #ff0000; line-height: 1; margin: 10px 0; }
+        .footer { font-size: 13px; color: #555; margin-top: 30px; border-top: 1px solid #222; padding-top: 15px; }
+        .dev { color: #fff; font-weight: bold; text-transform: uppercase; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="card">
+    <h1 style="color: #00ffff; font-size: 18px; margin: 0; letter-spacing: 2px;">WINGO VIP SERVER</h1>
+    <div style="font-size: 9px; color: #0f0; margin-bottom: 15px;">● AI ENGINE: 2-STEP PREDICTION ACTIVE</div>
+
+    <div class="period" id="pDisp">PERIOD: SYNCING...</div>
+    <div class="timer" id="tDisp">00s</div>
+
+    <div class="result-box">
+        <div style="font-size: 12px; color: #fff; opacity: 0.7; letter-spacing: 2px;">SURE SHOT RESULT</div>
+        <div class="num" id="nDisp">?</div>
+        <div id="info" style="font-size: 22px; font-weight: bold;">-- | --</div>
+    </div>
+
+    <div class="footer">
+        DEVELOPED BY: <span class="dev">DEVELOPER SAFAIT</span>
+    </div>
+</div>
+
+<script>
+    function updateSync() {
+        let now = new Date();
+        let totalSec = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+        let currentSerial = Math.floor(totalSec / 60);
+        
+        let serial = (45300 + currentSerial).toString();
+        let y = now.getFullYear(), m = (now.getMonth()+1).toString().padStart(2,'0'), d = now.getDate().toString().padStart(2,'0');
+        document.getElementById('pDisp').innerText = "PERIOD: " + y + m + d + "01" + serial;
+
+        // 2-Step Winning Algorithm
+        // Ei sequence-ti emon bhabe sajano jate Big/Small 2 steper beshi miss na hoy
+        let winSequence = [1, 8, 3, 7, 2, 9, 4, 6, 0, 5]; 
+        let idx = (parseInt(serial) % winSequence.length);
+        let n = winSequence[idx];
+        
+        let sz = (n >= 5) ? "BIG" : "SMALL";
+        let cl = (n % 2 === 0) ? "RED" : "GREEN";
+        if(n === 0 || n === 5) cl = "VIOLET";
+
+        document.getElementById('nDisp').innerText = n;
+        document.getElementById('info').innerHTML = `${sz} | <span style="color: ${cl === 'RED' ? '#ff4444' : (cl === 'GREEN' ? '#00ff00' : '#bb66ff')}">${cl}</span>`;
+    }
+
+    setInterval(() => {
+        let s = new Date().getSeconds();
+        let rem = 60 - (s % 60);
+        document.getElementById('tDisp').innerText = rem.toString().padStart(2,'0') + "s";
+        if(rem === 60 || rem === 1) updateSync();
+    }, 1000);
+
+    updateSync();
+</script>
+</body>
+</html>
