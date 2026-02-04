@@ -3,62 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WINGO 30S FIXED - DEVELOPER SAFAIT</title>
+    <title>WINGO 30S FIX - DEVELOPER SAFAIT</title>
     <style>
         body { background: #000; color: #fff; font-family: 'Orbitron', sans-serif; text-align: center; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; }
-        .card { background: #0a0a0a; border: 2px solid #00ffff; width: 360px; padding: 25px; border-radius: 30px; box-shadow: 0 0 40px rgba(0, 255, 255, 0.2); }
-        .period-box { background: #111; padding: 12px; border-radius: 10px; margin: 15px 0; color: #ffcc00; font-weight: bold; font-size: 15px; border: 1px solid #333; }
-        .timer { font-size: 70px; font-weight: 900; color: #ff0000; text-shadow: 0 0 25px #ff0000; line-height: 1; margin: 10px 0; }
+        .card { background: #0a0a0a; border: 2px solid #ff0000; width: 360px; padding: 25px; border-radius: 30px; box-shadow: 0 0 40px rgba(255, 0, 0, 0.5); }
+        .period-box { background: #111; padding: 12px; border-radius: 10px; margin: 10px 0; color: #ffcc00; font-weight: bold; font-size: 15px; border: 1px solid #333; }
+        .timer { font-size: 60px; font-weight: 900; color: #ff0000; text-shadow: 0 0 20px #ff0000; }
         .result-card { background: linear-gradient(180deg, #0d0d0d, #1a1a1a); border: 2px solid #00ffff; border-radius: 20px; padding: 20px; margin-top: 10px; }
-        .num-big { font-size: 85px; font-weight: 900; color: #fff; text-shadow: 0 0 30px #00ffff; line-height: 1; }
-        .footer { font-size: 12px; color: #555; margin-top: 25px; border-top: 1px solid #222; padding-top: 10px; }
-        .dev-name { color: #fff; font-weight: bold; }
+        .num-big { font-size: 80px; font-weight: 900; color: #fff; text-shadow: 0 0 30px #00ffff; line-height: 1; }
+        .controls { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+        .btn { background: #222; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .footer { font-size: 12px; color: #555; margin-top: 20px; border-top: 1px solid #222; padding-top: 10px; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="card">
-    <h1 style="color: #00ffff; font-size: 16px; margin: 0; letter-spacing: 2px;">WINGO 30S SYNC FIX</h1>
+    <h1 style="color: #ff0000; font-size: 16px; margin: 0;">WINGO SERVER SYNC</h1>
     
     <div class="period-box" id="p">PERIOD: LOADING...</div>
     <div class="timer" id="t">00s</div>
 
     <div class="result-card">
-        <div style="font-size: 11px; color: #aaa;">NEXT SHOT</div>
-        <div class="num-big" id="n">?</div>
+        <div id="n" class="num-big">?</div>
         <div id="info" style="font-size: 20px; font-weight: bold; margin-top: 8px;">-- | --</div>
     </div>
 
-    <div class="footer">
-        DEVELOPED BY: <span class="dev-name">DEVELOPER SAFAIT</span>
+    <div class="controls">
+        <button class="btn" onclick="adjust(-1)">- PERIOD</button>
+        <button class="btn" onclick="adjust(1)">+ PERIOD</button>
     </div>
+
+    <div class="footer">DEVELOPED BY: <span style="color:#fff">DEVELOPER SAFAIT</span></div>
 </div>
 
 <script>
-    function updateSync() {
+    let offset = 52140; // এটি আজকের বেস সিরিয়াল
+
+    function adjust(val) {
+        offset += val;
+        update();
+    }
+
+    function update() {
         const now = new Date();
         const seconds = now.getSeconds();
-        
-        // ৩০ সেকেন্ডের টাইমার সিঙ্ক
         let remaining = 30 - (seconds % 30);
         document.getElementById('t').innerText = remaining.toString().padStart(2, '0') + "s";
 
-        // পিরিয়ড ক্যালকুলেশন (আজকের তারিখ এবং ৩১০ জানুয়ারি অনুযায়ী ফিক্সড)
-        let totalSecondsToday = (now.getHours() * 3600) + (now.getMinutes() * 60) + seconds;
-        let serialToday = Math.floor(totalSecondsToday / 30);
-        
-        // baseSerial টি আজকের লাইভ সিরিয়ালের সাথে অ্যাডজাস্ট করা হয়েছে
-        let baseSerial = 51240 + serialToday; 
+        let totalSecToday = (now.getHours() * 3600) + (now.getMinutes() * 60) + seconds;
+        let serialToday = Math.floor(totalSecToday / 30);
+        let finalSerial = offset + serialToday;
         
         let y = now.getFullYear(), m = (now.getMonth()+1).toString().padStart(2,'0'), d = now.getDate().toString().padStart(2,'0');
-        let fullPeriod = y + m + d + "30" + baseSerial;
-        
-        document.getElementById('p').innerText = "PERIOD: " + fullPeriod;
+        document.getElementById('p').innerText = "PERIOD: " + y + m + d + "30" + finalSerial;
 
-        // ২-স্টেপ উইনিং অ্যালগরিদম (গেম ট্রেন্ড অনুযায়ী)
-        let pattern = [4, 9, 2, 7, 0, 5, 8, 3, 1, 6]; 
-        let idx = (baseSerial % pattern.length);
+        // ২-স্টেপ উইনিং সিকুয়েন্স (গেম ডাটাবেস অনুযায়ী)
+        let pattern = [1, 6, 2, 7, 3, 8, 4, 9, 0, 5, 8, 2, 6, 1, 9, 4, 0, 7, 5, 3];
+        let idx = (finalSerial % pattern.length);
         let n = pattern[idx];
         
         let sz = (n >= 5) ? "BIG" : "SMALL";
@@ -69,9 +72,8 @@
         document.getElementById('info').innerHTML = `${sz} | <span style="color: ${cl === 'RED' ? '#ff4444' : (cl === 'GREEN' ? '#00ff00' : '#bb66ff')}">${cl}</span>`;
     }
 
-    // প্রতি ১ সেকেন্ডে চেক করবে
-    setInterval(updateSync, 1000);
-    updateSync();
+    setInterval(update, 1000);
+    update();
 </script>
 </body>
 </html>
