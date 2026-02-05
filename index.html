@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WINGO VIP SYNC - DEVELOPER SAFAIT</title>
+    <title>WINGO FAST SYNC - DEVELOPER SAFAIT</title>
     <style>
         body { background: #000; color: #fff; font-family: 'Orbitron', sans-serif; text-align: center; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; }
         .card { background: #0a0a0a; border: 2px solid #00ffff; width: 370px; padding: 25px; border-radius: 35px; box-shadow: 0 0 50px rgba(0, 255, 255, 0.3); }
         .period-box { background: #111; padding: 12px; border-radius: 12px; margin: 10px 0; color: #ffcc00; font-weight: bold; font-size: 15px; border: 1px solid #333; }
         .timer { font-size: 60px; font-weight: 900; color: #ff0000; text-shadow: 0 0 20px #ff0000; }
         .res-card { background: linear-gradient(180deg, #0d0d0d, #1a1a1a); border: 2px solid #00ffff; border-radius: 20px; padding: 20px; margin-top: 10px; }
-        .num-big { font-size: 90px; font-weight: 900; color: #fff; text-shadow: 0 0 30px #00ffff; line-height: 1; }
-        .sync-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .btn { background: #111; color: #00ffff; border: 1px solid #00ffff; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.2s; }
+        .num-big { font-size: 85px; font-weight: 900; color: #fff; text-shadow: 0 0 30px #00ffff; line-height: 1; }
+        .sync-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
+        .btn { background: #111; color: #00ffff; border: 1px solid #00ffff; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
         .btn:active { background: #00ffff; color: #000; }
-        .footer { font-size: 11px; color: #444; margin-top: 25px; border-top: 1px solid #222; padding-top: 15px; }
+        .footer { font-size: 11px; color: #444; margin-top: 20px; border-top: 1px solid #222; padding-top: 15px; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="card">
-    <h2 style="color: #00ffff; font-size: 16px; margin: 0; letter-spacing: 2px;">WINGO SERVER SYNC</h2>
-    <div style="font-size: 9px; color: #0f0; margin-bottom: 5px;">● DATA INJECTION: LIVE</div>
-
-    <div class="period-box" id="p">PERIOD: SYNCING...</div>
+    <h2 style="color: #00ffff; font-size: 16px; margin: 0; letter-spacing: 2px;">WINGO RAPID SYNC</h2>
+    
+    <div class="period-box" id="p">PERIOD: LOADING...</div>
     <div class="timer" id="t">00s</div>
 
     <div class="res-card">
@@ -33,16 +32,20 @@
     </div>
 
     <div class="sync-controls">
-        <button class="btn" onclick="adj(-1)">- ADJUST PERIOD</button>
-        <button class="btn" onclick="adj(1)">+ ADJUST PERIOD</button>
+        <button class="btn" onclick="adj(-100)">- 100</button>
+        <button class="btn" onclick="adj(100)">+ 100</button>
+        <button class="btn" onclick="adj(-10)">- 10</button>
+        <button class="btn" onclick="adj(10)">+ 10</button>
+        <button class="btn" onclick="adj(-1)">- 1</button>
+        <button class="btn" onclick="adj(1)" style="border-width: 2px;">+ 1 (FIX)</button>
     </div>
 
     <div class="footer">DEVELOPED BY: <span style="color:#fff">DEVELOPER SAFAIT</span></div>
 </div>
 
 <script>
-    // এই অফসেটটি তুমি বা ক্লায়েন্ট বাটন দিয়ে চেঞ্জ করতে পারবে
-    let offset = 41200; 
+    // ১৩০ থেকে ২১১ তে যাওয়ার জন্য আমি বেস বাড়িয়ে দিচ্ছি
+    let offset = 41281; 
 
     function adj(v) { 
         offset += v; 
@@ -63,7 +66,7 @@
         document.getElementById('p').innerText = "PERIOD: " + y + m + d + "30" + finalSerial;
 
         // নম্বর ৩-স্টেপ এবং বিগ/স্মল ১-স্টেপ উইনিং সিকোয়েন্স
-        let pattern = [2, 7, 1, 9, 4, 8, 0, 5, 3, 6, 8, 1, 7, 2, 9, 4, 0, 5, 3, 6];
+        let pattern = [3, 8, 2, 7, 0, 5, 4, 9, 1, 6, 4, 0, 9, 5, 2, 8, 3, 7, 1, 6];
         let idx = (finalSerial % pattern.length);
         let n = pattern[idx];
         
